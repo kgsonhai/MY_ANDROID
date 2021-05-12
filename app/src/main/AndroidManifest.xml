@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.cuahangonline">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="CuaHangOnline"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".activity.Splash_activity"></activity>
+        <activity android:name=".activity.Dangky_Activity" />
+        <activity android:name=".activity.Aoquan_activity" />
+        <activity android:name=".activity.Danhmucsp_Activity" />
+        <activity android:name=".activity.ThanhToan_Activity" />
+        <activity android:name=".activity.GioHang_Activity" />
+        <activity android:name=".activity.Chitietsp_Activity" />
+        <activity android:name=".activity.ThongTin_Activity" />
+        <activity android:name=".activity.LienHe_Activity" />
+        <activity android:name=".activity.Dep_Activity" />
+        <activity android:name=".activity.Giay_Activity" />
+        <activity android:name=".activity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

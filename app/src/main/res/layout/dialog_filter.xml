@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="18dp"
+    android:background="@drawable/bagrount_diaglog_filter"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bagrount_diaglog_filter_blue_top_left_right"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="Tìm kiếm theo yêu cầu"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Khoảng giá"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup1"
+                        app:singleSelection="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="25dp"
+                            android:text="Lower 1 million" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="25dp"
+                            android:text="From 1-2 million" />
+
+                        <com.google.android.material.chip.Chip
+
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="25dp"
+                            android:text="From 2-3 million" />
+
+                        <com.google.android.material.chip.Chip
+
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Higher 3 million" />
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_margin="5dp"
+                android:background="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Màu sắc"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup2"
+                        app:singleSelection="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.chip.Chip
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:text="Trắng" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="Đen" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="60dp"
+                            android:text="Tím" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="Đỏ" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="20dp"
+                            android:text="Hồng" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xanh" />
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_margin="5dp"
+                android:background="@color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kích cỡ"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup3"
+                        app:singleSelection="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="38" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="39" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="70dp"
+                            android:text="40" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="41" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="42" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="43" />
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_margin="5dp"
+            android:background="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giảm giá"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup4"
+                        app:singleSelection="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="10%" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="25%" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="70dp"
+                            android:text="30%" />
+
+
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_margin="5dp"
+            android:background="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tình trạng"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroup5"
+                        app:singleSelection="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="Còn hàng" />
+
+                        <com.google.android.material.chip.Chip
+                            android:theme="@style/Theme.MaterialComponents.Light"
+                            style="@style/Widget.MaterialComponents.Chip.Filter"
+                            android:checkable="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:text="Hết hàng" />
+
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/black" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnResetFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Thiết lập lại" />
+
+            <Button
+                android:id="@+id/btnapplyFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Áp dụng" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+
+
+
+</LinearLayout>
