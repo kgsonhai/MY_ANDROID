@@ -101,7 +101,7 @@ public class ListSearchViewSP extends Fragment {
                             IdLoaisp = jsonObject.getInt("idLoaisp");
 
                             String motaRutGon = mota.substring(0,60)+"...";
-                            sanphamArrayList.add(new sanpham(id,tengiay,giagiay,hinhanh,motaRutGon,IdLoaisp));
+                            sanphamArrayList.add(new sanpham(id,tengiay,giagiay,"https://website-chgiay.000webhostapp.com/admin/"+hinhanh,motaRutGon,IdLoaisp));
                             adapter.notifyDataSetChanged();
                             txtTotalSP.setText("Tìm được tất cả "+CountProduct+" sản phẩm");
 

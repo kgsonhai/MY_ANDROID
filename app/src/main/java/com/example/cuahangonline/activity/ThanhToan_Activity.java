@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.cuahangonline.Adapter.Thanhtoan_adapter;
+import com.example.cuahangonline.Model.Database;
 import com.example.cuahangonline.R;
 import com.example.cuahangonline.ultil.CheckConnection;
 import com.example.cuahangonline.ultil.Server;
@@ -81,6 +82,9 @@ public class ThanhToan_Activity extends AppCompatActivity {
         btndathang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Database database = new Database(getApplicationContext(),"giohang.sqlite",null,1);
+                database.queryData("DELETE FROM giohang");
+
                 final int idUser = MainActivity.informationUser.idUser;
                 final String ten  = MainActivity.informationUser.getTen().trim();
                 final String sdt = MainActivity.informationUser.getSdt().trim();

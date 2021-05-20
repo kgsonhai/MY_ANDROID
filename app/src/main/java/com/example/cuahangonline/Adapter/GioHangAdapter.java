@@ -147,6 +147,7 @@ public class GioHangAdapter extends BaseAdapter {
                 }
             }
         });
+//        GioHang_Activity.ShowCart();
 
 
         return convertView;

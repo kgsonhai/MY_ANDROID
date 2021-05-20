@@ -1,6 +1,8 @@
 package com.example.cuahangonline.activity;
 
+import android.app.usage.UsageEvents;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +35,7 @@ import com.example.cuahangonline.Adapter.loaiSPAdapter;
 import com.example.cuahangonline.Adapter.sanphamAdapter;
 import com.example.cuahangonline.Fragment.ChangeLogin_Fragment;
 import com.example.cuahangonline.Fragment.formAccount_Fragment;
+import com.example.cuahangonline.Model.Database;
 import com.example.cuahangonline.Model.Information_user;
 import com.example.cuahangonline.Model.giohang;
 import com.example.cuahangonline.Model.loaiSP;
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_CONNECTIONS = "KEY_CONNECTIONS";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Kiểm tra lại kết nối",Toast.LENGTH_SHORT).show();
             finish();
         }
-
 
     }
 
@@ -312,6 +315,8 @@ public class MainActivity extends AppCompatActivity {
         }else{
             manggiohang = new ArrayList<>();
         }
+
+
 
     }
 }

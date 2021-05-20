@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.InformationAC_activity"
+    android:weightSum="10"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarInforAC"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="Thông tin người dùng"
+        android:background="#4BD9EC">
+    </androidx.appcompat.widget.Toolbar>
+
+    <ImageButton
+        android:id="@+id/imgACAvata"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên"
+                android:layout_alignParentLeft="true"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/txtnext1"
+                android:src="@drawable/ic_baseline_navigate_next_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtACname"
+                android:layout_toLeftOf="@id/txtnext1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Nguyễn Văn A"/>
+        </RelativeLayout>
+
+        <View
+            android:background="@color/cardview_dark_background"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"></View>
+
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                    android:text="Tên đăng nhập"
+                android:layout_alignParentLeft="true"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/txtACusername"
+                android:layout_toLeftOf="@id/txtnext2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Nguyễn Văn A"/>
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/txtnext2"
+                android:src="@drawable/ic_baseline_navigate_next_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <View
+            android:background="@color/cardview_dark_background"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"></View>
+
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:layout_alignParentLeft="true"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/txtACemail"
+                android:layout_toLeftOf="@id/txtnext3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Nguyễn Văn A"/>
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/txtnext3"
+                android:src="@drawable/ic_baseline_navigate_next_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <View
+            android:background="@color/cardview_dark_background"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"></View>
+
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Số điện thoại"
+                android:layout_alignParentLeft="true"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/txtACsdt"
+                android:layout_toLeftOf="@id/txtnext4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Nguyễn Văn A"/>
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/txtnext4"
+                android:src="@drawable/ic_baseline_navigate_next_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <View
+            android:background="@color/cardview_dark_background"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"></View>
+
+        <RelativeLayout
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ"
+                android:layout_alignParentLeft="true"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/txtnext5"
+                android:src="@drawable/ic_baseline_navigate_next_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtACdiachi"
+                android:layout_toLeftOf="@id/txtnext5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="Nguyễn Văn A"/>
+        </RelativeLayout>
+
+        <View
+            android:background="@color/cardview_dark_background"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"></View>
+
+        <RelativeLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thay đổi mật khẩu"
+                android:layout_alignParentLeft="true"
+                android:textStyle="bold"
+                android:textSize="20sp"/>
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_baseline_navigate_next_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_margin="15dp"
+        android:id="@+id/btnUpdateInforAC"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Cập nhật"
+        android:background="@drawable/border_capnhat"
+        android:textSize="20sp"/>
+
+</LinearLayout>

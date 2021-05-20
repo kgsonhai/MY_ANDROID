@@ -203,7 +203,7 @@ public class ListSPforFilter extends Fragment {
                             mota = jsonObject.getString("motasp");
                             IdLoaisp = jsonObject.getInt("idLoaisp");
 
-                            sanphamArrayList.add(new sanpham(id,tengiay,giagiay,hinhanh,mota,IdLoaisp));
+                            sanphamArrayList.add(new sanpham(id,tengiay,giagiay,"https://website-chgiay.000webhostapp.com/admin/"+hinhanh,mota,IdLoaisp));
                             adapter.notifyDataSetChanged();
                             txtTotalSP.setText("Tìm được tất cả "+CountProduct+" sản phẩm");
 

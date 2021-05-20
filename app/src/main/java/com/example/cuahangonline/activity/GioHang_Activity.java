@@ -1,10 +1,12 @@
 package com.example.cuahangonline.activity;
 
+import android.app.usage.UsageEvents;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Lifecycle;
 
 import com.example.cuahangonline.Adapter.GioHangAdapter;
 import com.example.cuahangonline.Model.Database;
@@ -22,6 +25,7 @@ import com.example.cuahangonline.R;
 import com.example.cuahangonline.ultil.CheckConnection;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class GioHang_Activity extends AppCompatActivity {
     ListView listViewGioHang;
@@ -31,6 +35,8 @@ public class GioHang_Activity extends AppCompatActivity {
     Toolbar toolbar;
     GioHangAdapter gioHangAdapter;
     Database database;
+    ArrayList<giohang> arrayListGioHang;
+    static int testShowCart = 1;
 
 
 
@@ -41,16 +47,14 @@ public class GioHang_Activity extends AppCompatActivity {
 
         Anhxa();
         ActionToolBar();
+//        if (testShowCart == 1){
+//            ShowCart();
+//            testShowCart++;
+//        }
         CheckData();
         EventDisplayData();
         CatchOnItemListView();
         EventButtonMuavaThanhToan();
-//        checkButtonClick();
-//
-        ShowCart();
-//        database.queryData("DELETE FROM giohang");
-//            SaveCart();
-
 
     }
 
@@ -150,56 +154,31 @@ public class GioHang_Activity extends AppCompatActivity {
         });
     }
 
-//    private void checkButtonClick() {
-//        btnThanhToan.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//
-//                StringBuffer responseText = new StringBuffer();
-//                responseText.append("The following were selected...\n");
-//
-//                for(int i=0;i<MainActivity.manggiohang.size();i++){
-//                    giohang giohang = MainActivity.manggiohang.get(i);
-//                    if(giohang.isSeleted()){
-//                        responseText.append("\n" + giohang.getTensp()+"\n");
-//                    }
-//                }
-//                Toast.makeText(getApplicationContext(),
-//                        responseText, Toast.LENGTH_LONG).show();
-//
-//            }
-//        });
-//
-//    }
     private void SaveCart(){
         database.queryData("CREATE TABLE IF NOT EXISTS giohang(id INTEGER PRIMARY KEY AUTOINCREMENT, TenSP STRING, GiaSP INTEGER, Hinh STRING, soluong INTEGER )");
-        if (MainActivity.manggiohang.size() > 0){
             for (int i=0;i<MainActivity.manggiohang.size();i++){
-                String ten = MainActivity.manggiohang.get(i).tensp;
-                int gia = MainActivity.manggiohang.get(i).giasp;
-                String hinh = MainActivity.manggiohang.get(i).hinhsp;
-                int soluong = MainActivity.manggiohang.get(i).soluongsp;
-                database.queryData("INSERT INTO giohang VALUES(null,'"+ten+"','"+gia+"','"+hinh+"','"+soluong+"')");
-                CheckConnection.ShowToast_short(getApplicationContext(),"Thanh cong");
-            }
+                String tenDB = MainActivity.manggiohang.get(i).tensp;
+                int giaDB = MainActivity.manggiohang.get(i).giasp;
+                String hinhDB = MainActivity.manggiohang.get(i).hinhsp;
+                int soluongDB = MainActivity.manggiohang.get(i).soluongsp;
+                database.queryData("INSERT INTO giohang VALUES(null,'"+tenDB+"','"+giaDB+"','"+hinhDB+"','"+soluongDB+"')");
         }
     }
 
-    private void ShowCart(){
+    public void ShowCart(){
         Cursor dataCart = database.getData("SELECT * FROM giohang");
-        MainActivity.manggiohang.clear();
-        while (dataCart.moveToNext()){
-            int id = dataCart.getInt(0);
-            String ten = dataCart.getString(1);
-            int gia = dataCart.getInt(2);
-            String hinh = dataCart.getString(3);
-            int soluong = dataCart.getInt(4);
-            MainActivity.manggiohang.add(new giohang(id,ten,gia,hinh,soluong));
-            CheckConnection.ShowToast_short(getApplicationContext(),ten);
-        }
-        gioHangAdapter.notifyDataSetChanged();
-
+            arrayListGioHang.clear();
+            while (dataCart.moveToNext()){
+                int idDB = dataCart.getInt(0);
+                String tenDB = dataCart.getString(1);
+                int giaDB = dataCart.getInt(2);
+                String hinhDB = dataCart.getString(3);
+                int soluongDB = dataCart.getInt(4);
+                arrayListGioHang.add(new giohang(idDB,tenDB,giaDB,hinhDB,soluongDB));
+                CheckConnection.ShowToast_short(getApplicationContext(),tenDB);
+            }
+            MainActivity.manggiohang.addAll(arrayListGioHang);
+            gioHangAdapter.notifyDataSetChanged();
     }
 
 
@@ -213,5 +192,13 @@ public class GioHang_Activity extends AppCompatActivity {
         gioHangAdapter = new GioHangAdapter(MainActivity.manggiohang, GioHang_Activity.this,android.R.layout.simple_list_item_multiple_choice);
         listViewGioHang.setAdapter(gioHangAdapter);
         database = new Database(this,"giohang.sqlite",null,1);
+        arrayListGioHang = new ArrayList<>();
+    }
+
+    @Override
+    protected void onDestroy() {
+        database.queryData("DELETE FROM giohang");
+        SaveCart();
+        super.onDestroy();
     }
 }

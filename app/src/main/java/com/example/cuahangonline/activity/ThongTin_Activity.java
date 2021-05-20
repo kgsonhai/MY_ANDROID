@@ -88,7 +88,7 @@ public class ThongTin_Activity extends AppCompatActivity {
                             avata = jsonObject.getString("avata_user");
                         }
 //                        Toast.makeText(getApplicationContext(),sdt+"\n"+diachi+"\n"+avata,Toast.LENGTH_LONG).show();
-                        MainActivity.informationUser = new Information_user(id,ten,sdt,diachi,avata,user);
+                        MainActivity.informationUser = new Information_user(id,ten,sdt,diachi,avata,user,email);
                         if (MainActivity.manggiohang.size()>0){
                             Intent intent = new Intent(getApplicationContext(), ThanhToan_Activity.class);
                             startActivity(intent);

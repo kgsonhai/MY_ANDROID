@@ -16,5 +16,10 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <string-array name="informationAC">
+        <item>Thông tin tài khoản</item>
+        <item>Đăng xuất</item>
+    </string-array>
+
 
 </resources>

@@ -5,16 +5,18 @@ public class Information_user {
     public String ten;
     public String sdt;
     public String diachi;
+    public String email;
     public String anhdaidien;
     public String username;
 
-    public Information_user(int idUser,String ten, String sdt, String diachi, String anhdaidien, String username) {
+    public Information_user(int idUser,String ten, String sdt, String diachi, String anhdaidien, String username,String email) {
         this.idUser = idUser;
         this.ten = ten;
         this.sdt = sdt;
         this.diachi = diachi;
         this.anhdaidien = anhdaidien;
         this.username = username;
+        this.email = email;
     }
 
     public int getIdUser() {
@@ -63,5 +65,13 @@ public class Information_user {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

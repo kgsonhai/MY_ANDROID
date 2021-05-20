@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="40dp"
+    android:background="@drawable/custom_dialog"
+    android:orientation="vertical">
+
+        <TextView
+            android:text="Cập nhật thông tin"
+            android:padding="10dp"
+            android:textSize="25sp"
+            android:id="@+id/titleDialog"
+            android:textColor="@color/black"
+            android:background="@drawable/custom_dialog_tilte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+        <EditText
+            android:id="@+id/dialogNeedEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nhập cái cần sửa"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSavedialog"
+                android:text="Cập nhật"
+                android:layout_margin="5dp"/>
+            <Button
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnHuydialog"
+                android:text="Hủy"/>
+        </LinearLayout>
+
+</LinearLayout>

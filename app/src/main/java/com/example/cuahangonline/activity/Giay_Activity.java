@@ -159,9 +159,7 @@ public class Giay_Activity extends AppCompatActivity {
                             hinhanh = jsonObject.getString("hinhanhsp");
                             mota = jsonObject.getString("motasp");
                             IdLoaisp = jsonObject.getInt("idLoaisp");
-
-//                            String motaRutGon = mota.substring(0,60)+"...";
-                            giayArrayList.add(new sanpham(id,tengiay,giagiay,hinhanh,mota+"..",IdLoaisp));
+                            giayArrayList.add(new sanpham(id,tengiay,giagiay,"https://website-chgiay.000webhostapp.com/admin/"+hinhanh,mota+"..",IdLoaisp));
                             giayAdapter.notifyDataSetChanged();
 
                         }
