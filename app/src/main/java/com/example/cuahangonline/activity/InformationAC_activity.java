@@ -5,9 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,8 +17,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -32,24 +32,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.cuahangonline.Model.Information_user;
 import com.example.cuahangonline.R;
-import com.example.cuahangonline.ultil.APIUntils;
 import com.example.cuahangonline.ultil.CheckConnection;
-import com.example.cuahangonline.ultil.DataClient;
+import com.example.cuahangonline.ultil.ApiService;
 import com.example.cuahangonline.ultil.Server;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,7 +72,10 @@ public class InformationAC_activity extends AppCompatActivity implements View.On
     String editName = "";
     int positonitem = 0;
     private static final int PICK_IMAGE_REQUEST = 123;
-    private String realPath = "";
+
+
+    String realpath = "" ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +164,6 @@ public class InformationAC_activity extends AppCompatActivity implements View.On
         txtemail = findViewById(R.id.txtACemail);
         txtsdt = findViewById(R.id.txtACsdt);
         txtdiachi = findViewById(R.id.txtACdiachi);
-//        txtpass = findViewById(R.id.txtACname);
         imageButton = findViewById(R.id.imgACAvata);
         btnUpdate = findViewById(R.id.btnUpdateInforAC);
 
@@ -166,7 +172,7 @@ public class InformationAC_activity extends AppCompatActivity implements View.On
         txtemail.setText(MainActivity.informationUser.getEmail());
         txtsdt.setText(MainActivity.informationUser.getSdt());
         txtdiachi.setText(MainActivity.informationUser.getDiachi());
-//        Picasso.with(getApplicationContext()).load(MainActivity.informationUser.getAnhdaidien()).into(imageButton);
+        Picasso.with(getApplicationContext()).load("http://192.168.1.20/shopping/admin/"+MainActivity.informationUser.getAnhdaidien()).into(imageButton);
 
         imageButton.setOnClickListener(this);
         btnUpdate.setOnClickListener(this);
@@ -216,9 +222,9 @@ public class InformationAC_activity extends AppCompatActivity implements View.On
     }
 
     private void showFileChooser() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent,PICK_IMAGE_REQUEST);
+        Intent intent = new Intent(Intent.ACTION_PICK) ;
+        intent.setType("image/*") ;
+        startActivityForResult(intent, 123);
     }
 
     private void UpdateData() {
@@ -228,10 +234,10 @@ public class InformationAC_activity extends AppCompatActivity implements View.On
             @Override
             public void onResponse(String response) {
                 if (response.equals("1")) {
-                    CheckConnection.ShowToast_short(getApplicationContext(), "Cập nhật thông tin thành công");
-                    MainActivity.displayAccount = false;
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
+                    MainActivity.displayAccount = false;
+                    CheckConnection.ShowToast_short(getApplicationContext(), "Cập nhật thông tin thành công");
                 }
             }
         }, new Response.ErrorListener() {
@@ -256,65 +262,70 @@ public class InformationAC_activity extends AppCompatActivity implements View.On
         requestQueue.add(stringRequest);
     }
 
-
-    public String getRealPathFromURI (Uri contentUri) {
-        String path = null;
-        String[] proj = { MediaStore.MediaColumns.DATA };
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
+    public String getRealPathFromUri ( Uri contentUri){
+        String path = null  ;
+        String[] proj = {MediaStore.MediaColumns.DATA}  ;
+        Cursor cursor = getContentResolver().query(contentUri, proj , null , null, null) ;
+        if( cursor.moveToFirst()){
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-            path = cursor.getString(column_index);
+            path = cursor.getString(column_index) ;
         }
         cursor.close();
-        return path;
+        return path ;
     }
 
     public void UploadHinh(){
-        File file = new File(realPath);
-        String file_path = file.getAbsolutePath();
-        String[] mangtenfile = file_path.split("\\.");
+        File file = new File(realpath) ;
+        String file_path = file.getAbsolutePath() ;
+        String[] mangtenfile = file_path.split("\\.") ;
 
-        file_path = mangtenfile[0] + System.currentTimeMillis() + "." + mangtenfile[1];
-        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+        file_path = mangtenfile[0] + System.currentTimeMillis() +"." + mangtenfile[1] ;
+        RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file) ;
+//                MultipartBody.Part body = MultipartBody.Part.createFormData("uploaded_file", file_path, requestBody) ;
 
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image",file_path,requestBody);
-        DataClient dataClient =  APIUntils.getData();
-        Call<String> callback = dataClient.UploadIMG(body);
-        callback.enqueue(new Callback<String>() {
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file_path, requestBody) ;
+        Toast.makeText(getApplicationContext(), "hhi" + file_path, Toast.LENGTH_LONG).show();
+
+        MultipartBody.Part id = MultipartBody.Part.createFormData("idUser", String.valueOf(MainActivity.informationUser.getIdUser())) ;
+
+        ApiService.apiService.UploadPhot(body , id).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, retrofit2.Response<String> response) {
                 if(response != null){
-                    String message = response.body();
-                    Log.d("aaa",message);
+                    String mess = response.body() ;
+                    Log.d("AAA", mess)  ;
+                    Toast.makeText(getApplicationContext(), mess, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.d("aaa",t.getMessage());
+                Log.d("BBB", t.getMessage()) ;
+                Toast.makeText(getApplicationContext(), "loic ket noi " + t.getMessage() + t.getStackTrace(), Toast.LENGTH_SHORT).show();
             }
         });
+        Log.d("BBB", file_path) ;
 
     }
 
 
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-            realPath = getRealPathFromURI(uri);
-            try {
-                InputStream inputStream = getContentResolver().openInputStream(uri);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                UploadHinh();
+        if ( requestCode == 123  && resultCode == RESULT_OK  && data != null){
+            Uri uri = data.getData() ;
+            realpath = getRealPathFromUri(uri) ;
+            try{
+                InputStream inputStream = getContentResolver().openInputStream(uri) ;
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream) ;
                 imageButton.setImageBitmap(bitmap);
-            } catch (FileNotFoundException e) {
+                UploadHinh();
+            } catch (FileNotFoundException e ){
                 e.printStackTrace();
             }
-
         }
+        super.onActivityResult(requestCode, resultCode, data);
         }
 
 

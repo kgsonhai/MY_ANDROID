@@ -1,6 +1,7 @@
 package com.example.cuahangonline.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +12,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.cuahangonline.Model.giohang;
 import com.example.cuahangonline.R;
 import com.example.cuahangonline.activity.Chitietsp_Activity;
 import com.example.cuahangonline.activity.GioHang_Activity;
 import com.example.cuahangonline.activity.MainActivity;
 import com.example.cuahangonline.ultil.CheckConnection;
+import com.example.cuahangonline.ultil.Server;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GioHangAdapter extends BaseAdapter {
     ArrayList<giohang> giohangArrayList;
     Context context;
     int layout;
+    int CountProductDB = 0;
 
     public GioHangAdapter(ArrayList<giohang> giohangArrayList, Context context, int layout) {
         this.giohangArrayList = giohangArrayList;
@@ -48,6 +62,34 @@ public class GioHangAdapter extends BaseAdapter {
         return position;
     }
 
+    private void getCountProduct(int id){
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        String duongdan = Server.duongdanCountSLSP;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, duongdan, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                    CountProductDB = Integer.parseInt(response);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> params = new HashMap<String,String>();
+                params.put("idSP", String.valueOf(id));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
     public class ViewHolder {
         private TextView txtTen, txtGia;
         private ImageView imgGioHang;
@@ -57,7 +99,7 @@ public class GioHangAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
+        ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -72,35 +114,40 @@ public class GioHangAdapter extends BaseAdapter {
             convertView.setTag(holder);
 
 
-
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
         giohang giohang = giohangArrayList.get(position);
         holder.txtTen.setText(giohang.getTensp());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.txtGia.setText(decimalFormat.format(giohang.getGiasp())+"");
+        holder.txtGia.setText(decimalFormat.format(giohang.getGiasp()) + "");
         Picasso.with(context).load(giohang.getHinhsp()).into(holder.imgGioHang);
-        holder.btnSLsp.setText(giohang.getSoluongsp()+"");
+        holder.btnSLsp.setText(giohang.getSoluongsp() + "");
+
+        getCountProduct(MainActivity.manggiohang.get(position).getIdsp());
 
         int SL = Integer.parseInt(holder.btnSLsp.getText().toString());
-//        if (MainActivity.manggiohang.get(position).getSoluongsp() >= Integer.parseInt(Chitietsp_Activity.CountProduct)){
-//                holder.btnCong.setVisibility(View.INVISIBLE);
-//                holder.btnTru.setVisibility(View.VISIBLE);
-//        }
-        if (SL >= 10){
+        if (SL >= 10) {
             holder.btnCong.setVisibility(View.INVISIBLE);
             holder.btnTru.setVisibility(View.VISIBLE);
-        }else if (SL <= 1){
+        } else if (SL <= 1) {
             holder.btnTru.setVisibility(View.INVISIBLE);
             holder.btnCong.setVisibility(View.VISIBLE);
+        }else if (giohangArrayList.get(position).getSoluongsp() >= CountProductDB) {
+            holder.btnCong.setVisibility(View.INVISIBLE);
+            holder.btnTru.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnTru.setVisibility(View.VISIBLE);
+            holder.btnCong.setVisibility(View.VISIBLE);
         }
+
+
 
         ViewHolder finalHolder = holder;
         holder.btnCong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int SLmoinhat = Integer.parseInt(finalHolder.btnSLsp.getText().toString()) +1;
+                int SLmoinhat = Integer.parseInt(finalHolder.btnSLsp.getText().toString()) + 1;
                 int SLhientai = MainActivity.manggiohang.get(position).getSoluongsp();
                 int Giahientai = MainActivity.manggiohang.get(position).getGiasp();
                 MainActivity.manggiohang.get(position).setSoluongsp(SLmoinhat);
@@ -108,16 +155,16 @@ public class GioHangAdapter extends BaseAdapter {
                 MainActivity.manggiohang.get(position).setGiasp(giamoinhat);
                 finalHolder.txtGia.setText(decimalFormat.format(giamoinhat) + " Đ");
                 GioHang_Activity.EventDisplayData();
-                if (SLmoinhat > 9){
+                getCountProduct(MainActivity.manggiohang.get(position).getIdsp());
+                if (SLmoinhat > 9) {
                     finalHolder.btnCong.setVisibility(View.INVISIBLE);
                     finalHolder.btnTru.setVisibility(View.VISIBLE);
                     finalHolder.btnSLsp.setText(String.valueOf(SLmoinhat));
-                }else if(Integer.parseInt(Chitietsp_Activity.CountProduct) <= SLmoinhat){
-                            finalHolder.btnCong.setVisibility(View.INVISIBLE);
-                            finalHolder.btnTru.setVisibility(View.VISIBLE);
-                            finalHolder.btnSLsp.setText(String.valueOf(SLmoinhat));
-                }
-                else{
+                }else if(SLmoinhat >= CountProductDB){
+                    finalHolder.btnCong.setVisibility(View.INVISIBLE);
+                    finalHolder.btnTru.setVisibility(View.VISIBLE);
+                    finalHolder.btnSLsp.setText(String.valueOf(SLmoinhat));
+                }else {
                     finalHolder.btnCong.setVisibility(View.VISIBLE);
                     finalHolder.btnTru.setVisibility(View.VISIBLE);
                     finalHolder.btnSLsp.setText(String.valueOf(SLmoinhat));
@@ -136,20 +183,17 @@ public class GioHangAdapter extends BaseAdapter {
                 MainActivity.manggiohang.get(position).setGiasp(giamoinhat);
                 finalHolder.txtGia.setText(decimalFormat.format(giamoinhat) + " Đ");
                 GioHang_Activity.EventDisplayData();
-                if (SLmoinhat < 2){
+                if (SLmoinhat <= 1 ) {
                     finalHolder.btnTru.setVisibility(View.INVISIBLE);
                     finalHolder.btnCong.setVisibility(View.VISIBLE);
                     finalHolder.btnSLsp.setText(String.valueOf(SLmoinhat));
-                }else{
+                } else {
                     finalHolder.btnCong.setVisibility(View.VISIBLE);
                     finalHolder.btnTru.setVisibility(View.VISIBLE);
                     finalHolder.btnSLsp.setText(String.valueOf(SLmoinhat));
                 }
             }
         });
-//        GioHang_Activity.ShowCart();
-
-
         return convertView;
     }
 

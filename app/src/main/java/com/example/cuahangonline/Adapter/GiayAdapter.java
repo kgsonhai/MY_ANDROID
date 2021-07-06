@@ -47,7 +47,7 @@ public class GiayAdapter extends RecyclerView.Adapter<GiayAdapter.ViewHolder> im
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtTen.setText(sanphamArrayList.get(position).getTensp());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.txtGia.setText("Giá : "+ decimalFormat.format(sanphamArrayList.get(position).getGiasp())+"Đ");
+        holder.txtGia.setText("Giá : "+ decimalFormat.format(sanphamArrayList.get(position).getGiasp())+"đ");
         holder.txtMota.setText(sanphamArrayList.get(position).getMotaSP());
         Picasso.with(context).load(sanphamArrayList.get(position).getHinhanhsp()).into(holder.imgHinh);
 

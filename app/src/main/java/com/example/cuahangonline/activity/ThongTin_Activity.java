@@ -2,6 +2,7 @@ package com.example.cuahangonline.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,12 +20,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.cuahangonline.Model.Information_user;
 import com.example.cuahangonline.R;
+import com.example.cuahangonline.ultil.CheckConnection;
 import com.example.cuahangonline.ultil.Server;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,10 +74,11 @@ public class ThongTin_Activity extends AppCompatActivity {
                 String user = "";
                 String email = "";
                 String ten = "";
+                String pass = "";
                 String sdt = "";
                 String diachi = "";
                 String avata = "";
-                if (response != null){
+                if (response != null && response.length() != 2){
                     try {
                         MainActivity.displayAccount = true;
                         JSONArray jsonArray = new JSONArray(response);
@@ -81,21 +86,23 @@ public class ThongTin_Activity extends AppCompatActivity {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             id = jsonObject.getInt("id");
                             user = jsonObject.getString("username");
+                            pass = jsonObject.getString("password");
                             email = jsonObject.getString("email");
                             ten = jsonObject.getString("ten");
                             sdt = jsonObject.getString("sdt");
                             diachi = jsonObject.getString("diachi");
                             avata = jsonObject.getString("avata_user");
                         }
-//                        Toast.makeText(getApplicationContext(),sdt+"\n"+diachi+"\n"+avata,Toast.LENGTH_LONG).show();
+
                         MainActivity.informationUser = new Information_user(id,ten,sdt,diachi,avata,user,email);
-                        if (MainActivity.manggiohang.size()>0){
-                            Intent intent = new Intent(getApplicationContext(), ThanhToan_Activity.class);
-                            startActivity(intent);
-                        }else{
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                        }
+                            if (MainActivity.manggiohang.size()>0){
+                                Intent intent = new Intent(getApplicationContext(), ThanhToan_Activity.class);
+                                startActivity(intent);
+                            }else{
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                            }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -120,6 +127,25 @@ public class ThongTin_Activity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
+
+    public static String convertByteToHex(byte[] data) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < data.length; i++) {
+            sb.append(Integer.toString((data[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
+    }
+
+        public static String getMD5(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            return convertByteToHex(messageDigest);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     private void Anhxa() {

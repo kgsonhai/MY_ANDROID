@@ -2,24 +2,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cuahangonline">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="CuaHangOnline"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        android:requestLegacyExternalStorage="true"
-        <activity android:name=".activity.InformationAC_activity"/>
-        <activity android:name=".activity.Splash_activity" />
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activity.LienketCH_activity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_api_key" />
+
+        <activity android:name=".activity.DonHang_activity" />
+        <activity android:name=".activity.LienHe_activity" />
+        <activity android:name=".activity.InformationAC_activity" />
         <activity android:name=".activity.Dangky_Activity" />
         <activity android:name=".activity.Aoquan_activity" />
         <activity android:name=".activity.Danhmucsp_Activity" />
@@ -27,10 +32,10 @@
         <activity android:name=".activity.GioHang_Activity" />
         <activity android:name=".activity.Chitietsp_Activity" />
         <activity android:name=".activity.ThongTin_Activity" />
-        <activity android:name=".activity.LienHe_Activity" />
         <activity android:name=".activity.Dep_Activity" />
         <activity android:name=".activity.Giay_Activity" />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.Splash_activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

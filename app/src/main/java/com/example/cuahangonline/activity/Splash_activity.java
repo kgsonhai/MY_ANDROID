@@ -24,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Splash_activity extends AppCompatActivity {
     Animation anim;
     ImageView img;
@@ -38,17 +40,28 @@ public class Splash_activity extends AppCompatActivity {
         loadData();
     }
 
+
     private void loadData() {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Server.duongdanSanPhamMoiNhat, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                String hinhanhSP = "";
                 if (response != null){
+                    int ID = 0;
+                    String tensp = "";
+                    Integer giasp = 0;
+                    String hinhanhSP = "";
+                    String motaSP = "";
+                    int IDLoaisp = 0;
                     for (int i=0; i<response.length();i++){
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
+                            ID = jsonObject.getInt("id");
+                            tensp = jsonObject.getString("tensp");
+                            giasp = jsonObject.getInt("giasp");
                             hinhanhSP = jsonObject.getString("hinhanhsp");
+                            motaSP = jsonObject.getString("motasp");
+                            IDLoaisp = jsonObject.getInt("idLoaisp");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -62,7 +75,7 @@ public class Splash_activity extends AppCompatActivity {
                                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                     startActivity(intent);
                                 }else{
-//                        CheckConnection.ShowToast_short(getApplicationContext(),"Đang tải dữ liệu!!");
+                        CheckConnection.ShowToast_short(getApplicationContext(),"Đang tải dữ liệu!!");
                                 }
                             }
                         });

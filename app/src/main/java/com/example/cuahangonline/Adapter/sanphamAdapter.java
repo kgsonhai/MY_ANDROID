@@ -42,7 +42,7 @@ public class sanphamAdapter extends RecyclerView.Adapter<sanphamAdapter.ViewHold
         Picasso.with(context).load(sanphamArrayList.get(position).getHinhanhsp()).into(holder.imgHinhAnhSP);
         holder.txtTenSP.setText(sanphamArrayList.get(position).getTensp());
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
-        holder.txtgiaSP.setText("Giá : "+ decimalFormat.format(sanphamArrayList.get(position).getGiasp()));
+        holder.txtgiaSP.setText("Giá : "+ decimalFormat.format(sanphamArrayList.get(position).getGiasp())+"đ");
     }
 
     @Override

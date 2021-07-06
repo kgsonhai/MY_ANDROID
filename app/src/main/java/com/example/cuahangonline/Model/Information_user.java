@@ -1,6 +1,9 @@
 package com.example.cuahangonline.Model;
 
-public class Information_user {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Information_user implements Serializable {
     public int idUser;
     public String ten;
     public String sdt;

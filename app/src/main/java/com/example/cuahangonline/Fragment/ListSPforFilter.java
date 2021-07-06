@@ -46,12 +46,12 @@ public class ListSPforFilter extends Fragment {
     private ProgressBar progressBar;
     private NestedScrollView nestedScrollView;
     int page = 1;
-    String CountProduct = "";
     String giaFilter = Danhmucsp_Activity.giaFilter;
     String mauFilter = Danhmucsp_Activity.mauFilter;
     String sizeFilter = Danhmucsp_Activity.sizeFilter;
     String saleFilter = Danhmucsp_Activity.saleFilter;
     String tinhtrangFilter = Danhmucsp_Activity.tinhtrangFilter;
+    String countProduct = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,12 +60,7 @@ public class ListSPforFilter extends Fragment {
         Anhxa(view);
         if (CheckConnection.haveNetworkConnect(getContext())){
             eventCatchFilter();
-//            Log.d("giay",giaFilter);
-//            Log.d("giay1",mauFilter);
-//            Log.d("giay2",saleFilter);
-//            Log.d("giay4",sizeFilter);
-//            Log.d("giay3",tinhtrangFilter);
-            CheckConnection.ShowToast_short(getContext(),giaFilter+"\n"+mauFilter+"\n"+sizeFilter+"\n");
+            getCountFilter();
             getData(page);
             nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
                 @Override
@@ -203,9 +198,9 @@ public class ListSPforFilter extends Fragment {
                             mota = jsonObject.getString("motasp");
                             IdLoaisp = jsonObject.getInt("idLoaisp");
 
-                            sanphamArrayList.add(new sanpham(id,tengiay,giagiay,"https://website-chgiay.000webhostapp.com/admin/"+hinhanh,mota,IdLoaisp));
+                            sanphamArrayList.add(new sanpham(id,tengiay,giagiay,"http://192.168.1.20/shopping/admin/"+hinhanh,mota,IdLoaisp));
                             adapter.notifyDataSetChanged();
-                            txtTotalSP.setText("Tìm được tất cả "+CountProduct+" sản phẩm");
+                            txtTotalSP.setText("Tìm được tất cả"+countProduct+" sản phẩm");
 
                         }
 //                            Toast.makeText(getContext(),"OK nhá",Toast.LENGTH_LONG).show();
@@ -214,10 +209,42 @@ public class ListSPforFilter extends Fragment {
                     }
                 }else{
                     progressBar.setVisibility(View.GONE);
-                    txtTotalSP.setText(CountProduct);
+                    txtTotalSP.setText("Tìm được tất cả"+countProduct+" sản phẩm");
                     CheckConnection.ShowToast_short(getContext(),"Đã hết sản phẩm");
                 }
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> params = new HashMap<String, String>();
+                params.put("giaSP",giaFilter);
+                params.put("mauSP",mauFilter);
+                params.put("sizeSP",sizeFilter);
+                params.put("saleSP",saleFilter);
+                params.put("tinhtrangSP",tinhtrangFilter);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+
+    }
+
+    public void getCountFilter(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        String duongdan = Server.duongdanCountFiler;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, duongdan, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response!=null){
+                    countProduct = response.toString();
+
+                }            }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {

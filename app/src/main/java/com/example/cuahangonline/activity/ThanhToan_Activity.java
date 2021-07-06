@@ -73,17 +73,46 @@ public class ThanhToan_Activity extends AppCompatActivity {
         txtTongThanhToan1.setText(decimalFormat.format(Tongtien)+" Đ");
         txtTongThanhToan2.setText(decimalFormat.format(Tongtien)+" Đ");
     }
+
     public void DisplayThongtinKH(){
         txthoten.setText("Họ tên: "+MainActivity.informationUser.getTen());
         txtSdt.setText("Số ĐT: 0"+MainActivity.informationUser.getSdt());
         txtDiachi.setText("Địa chỉ: "+MainActivity.informationUser.getDiachi());
     }
+
+    public void DeleteCartToDB(){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String duongdan = Server.duongdanXoaItemGioHang;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, duongdan, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> params = new HashMap<String,String>();
+                params.put("id_user", String.valueOf(MainActivity.informationUser.getIdUser()));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+
     public void EventButton(){
         btndathang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Database database = new Database(getApplicationContext(),"giohang.sqlite",null,1);
-                database.queryData("DELETE FROM giohang");
+                DeleteCartToDB();
 
                 final int idUser = MainActivity.informationUser.idUser;
                 final String ten  = MainActivity.informationUser.getTen().trim();
@@ -101,8 +130,8 @@ public class ThanhToan_Activity extends AppCompatActivity {
                                         new Response.Listener<String>() {
                                             @Override
                                             public void onResponse(String response) {
-                                                    MainActivity.manggiohang.clear();
-                                                    CheckConnection.ShowToast_short(getApplicationContext(),"Bạn dã mua hàng thành công");
+                                                MainActivity.manggiohang.clear();
+                                                CheckConnection.ShowToast_short(getApplicationContext(),"Bạn dã mua hàng thành công");
                                                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                                     startActivity(intent);
                                             }

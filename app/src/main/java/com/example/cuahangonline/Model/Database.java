@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class Database extends SQLiteOpenHelper {
+    SQLiteDatabase database;
     public Database(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -21,6 +22,7 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase database = getReadableDatabase();
         return database.rawQuery(sql,null);
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {

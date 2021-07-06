@@ -1,10 +1,13 @@
 package com.example.cuahangonline.activity;
 
 import android.app.usage.UsageEvents;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -13,19 +16,38 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Lifecycle;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.cuahangonline.Adapter.GioHangAdapter;
 import com.example.cuahangonline.Model.Database;
 import com.example.cuahangonline.Model.giohang;
+import com.example.cuahangonline.Model.sanpham;
 import com.example.cuahangonline.R;
 import com.example.cuahangonline.ultil.CheckConnection;
+import com.example.cuahangonline.ultil.Server;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.lang.Thread.sleep;
 
 public class GioHang_Activity extends AppCompatActivity {
     ListView listViewGioHang;
@@ -36,7 +58,9 @@ public class GioHang_Activity extends AppCompatActivity {
     GioHangAdapter gioHangAdapter;
     Database database;
     ArrayList<giohang> arrayListGioHang;
-    static int testShowCart = 1;
+    boolean checkAccount = false;
+    public static int checkCart = 0;
+
 
 
 
@@ -47,15 +71,14 @@ public class GioHang_Activity extends AppCompatActivity {
 
         Anhxa();
         ActionToolBar();
-//        if (testShowCart == 1){
-//            ShowCart();
-//            testShowCart++;
-//        }
+        GetCartFromDB();
         CheckData();
-        EventDisplayData();
         CatchOnItemListView();
+        EventDisplayData();
         EventButtonMuavaThanhToan();
-
+        if(MainActivity.manggiohang.size() > 0 && MainActivity.displayAccount == true){
+            PushCartToDB();
+        }
     }
 
     private void EventButtonMuavaThanhToan() {
@@ -76,6 +99,7 @@ public class GioHang_Activity extends AppCompatActivity {
                     }else{
                         Intent intent = new Intent(getApplicationContext(), ThanhToan_Activity.class);
                         startActivity(intent);
+                        PushCartToDB();
                     }
                 }else{
                     CheckConnection.ShowToast_short(getApplicationContext(),"Giỏ hàng của bạn chưa có sản phẩm nào");
@@ -97,6 +121,9 @@ public class GioHang_Activity extends AppCompatActivity {
                         if (MainActivity.manggiohang.size() <= 0){
                             txtThongBao.setVisibility(View.VISIBLE);
                         }else{
+                            if (MainActivity.displayAccount == true) {
+                                DeleteCartToDB(MainActivity.manggiohang.get(position).idsp);
+                            }
                             MainActivity.manggiohang.remove(position);
                             gioHangAdapter.notifyDataSetChanged();
                             EventDisplayData();
@@ -125,7 +152,7 @@ public class GioHang_Activity extends AppCompatActivity {
 
     public static void EventDisplayData() {
         int Tongtien = 0;
-        for (int i = 0; i< MainActivity.manggiohang.size(); i++){
+        for (int i=0;i<MainActivity.manggiohang.size();i++){
             Tongtien += MainActivity.manggiohang.get(i).getGiasp();
         }
         DecimalFormat decimalFormat = new DecimalFormat("###,###,###");
@@ -143,6 +170,127 @@ public class GioHang_Activity extends AppCompatActivity {
         }
     }
 
+    public void GetCartFromDB(){
+        if(MainActivity.displayAccount == true && checkCart == 0){
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            String duongdan = Server.duongdanLayGioHang;
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, duongdan, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    if (response != null) {
+                        int id = 0;
+                        String tensp = "";
+                        Integer giasp = 0;
+                        String hinhanhsp = "";
+                        int soluong = 0;
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i <= jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                id = jsonObject.getInt("id");
+                                tensp = jsonObject.getString("tensp");
+                                giasp = jsonObject.getInt("giasp");
+                                hinhanhsp = jsonObject.getString("hinhanhsp");
+                                soluong = jsonObject.getInt("soluongsp");
+
+                                Log.d("xxx",tensp);
+
+                                MainActivity.manggiohang.add(new giohang(id, tensp, giasp, "http://192.168.1.20/shopping/admin/"+hinhanhsp, soluong));
+                                checkCart = 1;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("idUser", String.valueOf(MainActivity.informationUser.getIdUser()));
+                    return params;
+                }
+            };
+            requestQueue.add(stringRequest);
+        }
+    }
+
+    public void PushCartToDB(){
+        if(MainActivity.manggiohang.size() > 0){
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            String duongdan = Server.duongdanPutGioHang;
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, duongdan, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    if (response != null) {
+
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    JSONArray jsonArray = new JSONArray();
+                    for (int i = 0;i<MainActivity.manggiohang.size();i++){
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("id_sanpham",MainActivity.manggiohang.get(i).getIdsp());
+                            jsonObject.put("soluong",MainActivity.manggiohang.get(i).getSoluongsp());
+                            jsonObject.put("id_user",MainActivity.informationUser.getIdUser());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        jsonArray.put(jsonObject);
+                    }
+                    HashMap<String,String> hashMap = new HashMap<String, String>();
+                    hashMap.put("json",jsonArray.toString());
+                    hashMap.put("idUser", String.valueOf(MainActivity.informationUser.getIdUser()));
+                    return hashMap;
+                }
+            };
+            requestQueue.add(stringRequest);
+        }
+    }
+
+    public void DeleteCartToDB(int idsp){
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String duongdan = Server.duongdanXoaItemGioHang;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, duongdan, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response != null) {
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> params = new HashMap<String,String>();
+                params.put("idSP", String.valueOf(idsp));
+                params.put("id_user", String.valueOf(MainActivity.informationUser.getIdUser()));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
     private void ActionToolBar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -154,32 +302,6 @@ public class GioHang_Activity extends AppCompatActivity {
         });
     }
 
-    private void SaveCart(){
-        database.queryData("CREATE TABLE IF NOT EXISTS giohang(id INTEGER PRIMARY KEY AUTOINCREMENT, TenSP STRING, GiaSP INTEGER, Hinh STRING, soluong INTEGER )");
-            for (int i=0;i<MainActivity.manggiohang.size();i++){
-                String tenDB = MainActivity.manggiohang.get(i).tensp;
-                int giaDB = MainActivity.manggiohang.get(i).giasp;
-                String hinhDB = MainActivity.manggiohang.get(i).hinhsp;
-                int soluongDB = MainActivity.manggiohang.get(i).soluongsp;
-                database.queryData("INSERT INTO giohang VALUES(null,'"+tenDB+"','"+giaDB+"','"+hinhDB+"','"+soluongDB+"')");
-        }
-    }
-
-    public void ShowCart(){
-        Cursor dataCart = database.getData("SELECT * FROM giohang");
-            arrayListGioHang.clear();
-            while (dataCart.moveToNext()){
-                int idDB = dataCart.getInt(0);
-                String tenDB = dataCart.getString(1);
-                int giaDB = dataCart.getInt(2);
-                String hinhDB = dataCart.getString(3);
-                int soluongDB = dataCart.getInt(4);
-                arrayListGioHang.add(new giohang(idDB,tenDB,giaDB,hinhDB,soluongDB));
-                CheckConnection.ShowToast_short(getApplicationContext(),tenDB);
-            }
-            MainActivity.manggiohang.addAll(arrayListGioHang);
-            gioHangAdapter.notifyDataSetChanged();
-    }
 
 
     private void Anhxa() {
@@ -191,14 +313,8 @@ public class GioHang_Activity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbarGioHang);
         gioHangAdapter = new GioHangAdapter(MainActivity.manggiohang, GioHang_Activity.this,android.R.layout.simple_list_item_multiple_choice);
         listViewGioHang.setAdapter(gioHangAdapter);
-        database = new Database(this,"giohang.sqlite",null,1);
         arrayListGioHang = new ArrayList<>();
+        checkAccount = MainActivity.displayAccount;
     }
 
-    @Override
-    protected void onDestroy() {
-        database.queryData("DELETE FROM giohang");
-        SaveCart();
-        super.onDestroy();
-    }
 }

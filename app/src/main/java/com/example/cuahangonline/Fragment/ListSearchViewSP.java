@@ -100,10 +100,10 @@ public class ListSearchViewSP extends Fragment {
                             mota = jsonObject.getString("motasp");
                             IdLoaisp = jsonObject.getInt("idLoaisp");
 
-                            String motaRutGon = mota.substring(0,60)+"...";
-                            sanphamArrayList.add(new sanpham(id,tengiay,giagiay,"https://website-chgiay.000webhostapp.com/admin/"+hinhanh,motaRutGon,IdLoaisp));
-                            adapter.notifyDataSetChanged();
+                            sanphamArrayList.add(new sanpham(id,tengiay,giagiay,"http://192.168.1.20/shopping/admin/"+hinhanh,mota,IdLoaisp));
                             txtTotalSP.setText("Tìm được tất cả "+CountProduct+" sản phẩm");
+                            adapter.notifyDataSetChanged();
+
 
                         }
                     } catch (JSONException e) {
@@ -111,7 +111,7 @@ public class ListSearchViewSP extends Fragment {
                     }
                 }else{
                     progressBar.setVisibility(View.GONE);
-                    txtTotalSP.setText(CountProduct);
+                    txtTotalSP.setText("Tìm được tất cả "+CountProduct+" sản phẩm");
                     CheckConnection.ShowToast_short(getContext(),"Đã hết sản phẩm");
                 }
             }

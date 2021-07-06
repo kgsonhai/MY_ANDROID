@@ -9,5 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#F1EAEA</color>
     <color name="bg_filter">#37B9F4</color>
+    <color name="red">#F10404</color>
+    <color name="orange">#FD5621</color>
+    <color name="duongke">#D6D0D0</color>
 
 </resources>

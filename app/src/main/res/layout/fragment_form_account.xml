@@ -30,7 +30,7 @@
                 android:innerRadius="0dp"
                 android:shape="ring"
                 android:thicknessRatio="1.9">
-                <ImageView
+                <ImageButton
                     android:layout_margin="2dp"
                     android:id="@+id/imageMenuUser"
                     android:src="@drawable/people"

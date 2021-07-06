@@ -11,15 +11,29 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="map_api_key">AIzaSyA3nc0yfS1K35ZuC9kf-HKI6c2Kzm-RMVc</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
     <string-array name="informationAC">
+        <item>Liên hệ</item>
         <item>Thông tin tài khoản</item>
+        <item>Đơn Hàng</item>
         <item>Đăng xuất</item>
     </string-array>
+
+    <string name="title_activity_lien_he_activity">Map</string>
+    <string name="title_activity_don_hang_activity">DonHang_activity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+
+    <string name="choxacnhan_fragment">Chờ xác nhận</string>
+    <string name="daxacnhan_fragment">Đang lấy hàng</string>
+    <string name="danggiaohang_fragment">Đang giao hàng</string>
+    <string name="dagiaohang_fragment">Đã giao hàng</string>
+    <string name="huydon_fragment">Đơn hủy</string>
 
 
 </resources>

@@ -1,9 +1,14 @@
 package com.example.cuahangonline.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.usage.UsageEvents;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -52,6 +58,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.example.cuahangonline.activity.Splash_activity.*;
+
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     ViewFlipper viewFlipper;
@@ -71,12 +79,17 @@ public class MainActivity extends AppCompatActivity {
     public static boolean displayAccount = false;
     public static final String KEY_CONNECTIONS = "KEY_CONNECTIONS";
 
+    private static final int MY_PERMINSSION_REQUEST_CODE_ALL_PHONE  = 555 ;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        askPermissionAndCall(MainActivity.this) ;
+
+
         if (CheckConnection.haveNetworkConnect(getApplicationContext())){
             anhxa();
             actionBar();
@@ -154,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 5:
                         if (CheckConnection.haveNetworkConnect(getApplicationContext())){
-                            Intent intent = new Intent(MainActivity.this, LienHe_Activity.class);
+                            Intent intent = new Intent(MainActivity.this, LienHe_activity.class);
                             startActivity(intent);
                         }else{
                             CheckConnection.ShowToast_short(getApplicationContext(),"Hãy kiểm tra kết nối");
@@ -163,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 6:
                         if (CheckConnection.haveNetworkConnect(getApplicationContext())){
-                            Intent intent = new Intent(MainActivity.this,ThongTin_Activity.class);
+                            Intent intent = new Intent(MainActivity.this,LienketCH_activity.class);
                             startActivity(intent);
                         }else{
                             CheckConnection.ShowToast_short(getApplicationContext(),"Hãy kiểm tra kết nối");
@@ -196,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                             hinhanhSP = jsonObject.getString("hinhanhsp");
                             motaSP = jsonObject.getString("motasp");
                             IDLoaisp = jsonObject.getInt("idLoaisp");
-                            sanphamArrayList.add(new sanpham(ID,tensp,giasp,hinhanhSP,motaSP,IDLoaisp));
+                            sanphamArrayList.add(new sanpham(ID,tensp,giasp,"http://192.168.1.20/shopping/admin/"+hinhanhSP,motaSP,IDLoaisp));
                             sanphamAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -212,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
         });
         requestQueue.add(jsonArrayRequest);
     }
+
 
     private void getDuLieuLoaiSP(){
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -319,4 +333,41 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private void askPermissionAndCall(Activity activity){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int sendSmsPermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) ; // check quyền có đã bật hay chưa
+
+            if( sendSmsPermission != PackageManager.PERMISSION_GRANTED) { // nếu quyền  ko bật thì mở một request đòi bật quyền truy cập lên
+                activity.requestPermissions(
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMINSSION_REQUEST_CODE_ALL_PHONE
+                );
+                return ;
+            }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if( requestCode == 555){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                // thực hiện hành động nêu chấp nhận
+                // hoặc ko cần vì khi chấp nhận thì quyền đã được bật
+                Toast.makeText(MainActivity.this, "Cho phép truy cập" , Toast.LENGTH_LONG).show();
+
+            }
+            else {
+                // thực hiện hành động nếu người dùng từ chối quyền câp
+                // vi dụ nó đéo cho truy caapj bộ nhớ thì đóng acitvity đeo cho nó mở app nữa
+                Toast.makeText(MainActivity.this ,  "Từ chối truy cập" , Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+
+
+
 }
